@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<link rel="shortcut icon" href="/favicon_icon/favicon.ico" />
+
+<body>
+  <div id="map"></div>
+</body>
+
+<script>
+
+  class Map {
+    constructor(
+      _players_at_start,
+      _round,
+      _players_turn_at_round_start,
+      _players_turn_at_turn_start
+    ) {
+      this.players_at_start = _players_at_start;
+      this.round = _round;
+      this.players_turn_at_round_start = _players_turn_at_round_start;
+      this.players_turn_at_turn_start = _players_turn_at_turn_start;
+      this.players_left = [];
+      this.map = [];
+    }
+    /*setPlayersLeft() {
+      for (let i = 0; i < this.players_at_start; i++) {
+        this.players_left.push(i);
+      }
+    }*/
+    drawMap() {
+      for (let i = 0; i < this.players_left.length + 2; i++) {
+        let wagon = [];
+        for (let y = 0; y < 2; y++) {
+          let row = [];
+          wagon.push(row);
+        }
+        this.map.push(wagon);
+      }
+    }
+  }
+
+  class Player {
+    constructor(
+      _name, //int
+      _wagon, //int
+      //_row, //int
+      //_position, //int
+      //_dead, //bool
+      //_shot, //bool
+      _forward, //bool
+      //_last_wagon, //bool
+      //_first_wagon //bool
+    ) {
+      this.name = _name;
+      this.wagon = _wagon;
+      this.row = 0;
+      this.position = 0;
+      this.dead = false;
+      this.shot = false;
+      this.forward = _forward;
+      this.last_wagon = false;
+      this.first_wagon = false;
+    };
+
+    ifShot() {
+      if (this.shot === true) {
+        this.shot = false;
+      };
+    };
+  };
+
+  function CreatePlayer (name, wagon, forward) {
+      this.create = function(name, wagon, forward) {
+        return new Player (name, wagon, forward);
+      }
+  }
+
+  var playersAtStart = 4;
+  var createPlayer = new CreatePlayer();
+  var gameMap = new Map(playersAtStart, 1, 0, 0);
+
+  gameMap.drawMap();
+
+  for (i=0;i<playersAtStart;i++) {
+      gameMap.players_left.push(createPlayer.create(i,i+1,i<Math.round(playersAtStart/2)))
+  }
+  
+  console.log(gameMap.players_left)
+
+//////////////////////////// FRONTEND ///////////////////////////////////
+  let table = "<table>";
+  for (i = 0; i < gameMap.map.length; i++) {
+    table += "<tr><td>" + JSON.stringify(gameMap.map[i]) + "</td></tr>";
+  }
+  table += "</table>";
+  document.getElementById("map").innerHTML = table;
+  //console.log(gameMap.players_left)
+/////////////////////////////////////////////////////////////////////////
+</script>
