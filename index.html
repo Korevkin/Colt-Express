@@ -6,26 +6,20 @@
 </body>
 
 <script>
-
   class Map {
     constructor(
       _players_at_start,
       _round,
       _players_turn_at_round_start,
-      _players_turn_at_turn_start
+      _players_turn
     ) {
       this.players_at_start = _players_at_start;
       this.round = _round;
       this.players_turn_at_round_start = _players_turn_at_round_start;
-      this.players_turn_at_turn_start = _players_turn_at_turn_start;
+      this.players_turn = _players_turn;
       this.players_left = [];
       this.map = [];
     }
-    /*setPlayersLeft() {
-      for (let i = 0; i < this.players_at_start; i++) {
-        this.players_left.push(i);
-      }
-    }*/
     drawMap() {
       for (let i = 0; i < this.players_left.length + 2; i++) {
         let wagon = [];
@@ -36,6 +30,51 @@
         this.map.push(wagon);
       }
     }
+    placePlayers() {
+      this.players_left.forEach((player) => {
+        if (player["dead"] != true) {
+          this.map[player["wagon"]][player["row"]][player["position"]] =
+            player["name"] +
+            player["forward"].toString() +
+            player["shot"].toString();
+        }
+        console.log(player);
+      });
+    }
+    nextTurn() {
+      var z = 0;
+      // loop from current player to the last
+      for (
+        let i = this.players_turn;
+        i < this.players_left.length &&
+        this.players_turn != this.players_left.slice(-1)[0]["name"];
+        i++
+      ) {
+        if (
+          this.players_left[i]["dead"] != true &&
+          this.players_left[i]["shot"] != true &&
+          this.players_left[i]["name"] > this.players_turn
+        ) {
+          this.players_turn = this.players_left[i]["name"];
+          z = 1;
+          break;
+        }
+      }
+      // else loop from first player to current
+      for (let i = 0; i < this.players_turn && z != 1; i++) {
+        if (
+          this.players_left[i]["dead"] != true &&
+          this.players_left[i]["shot"] != true
+        ) {
+          this.players_turn = this.players_left[i]["name"];
+          break;
+        }
+      }
+      console.log(this.players_turn)
+    }
+    // ТУТ ЕСЛИ РАУНД ЗАКОНЧЕН, ТО players_turn = players_turn_at_round_start
+
+    //climb() {}
   }
 
   class Player {
@@ -46,7 +85,7 @@
       //_position, //int
       //_dead, //bool
       //_shot, //bool
-      _forward, //bool
+      _forward //bool
       //_last_wagon, //bool
       //_first_wagon //bool
     ) {
@@ -59,34 +98,54 @@
       this.forward = _forward;
       this.last_wagon = false;
       this.first_wagon = false;
-    };
+    }
 
     ifShot() {
       if (this.shot === true) {
         this.shot = false;
-      };
-    };
-  };
-
-  function CreatePlayer (name, wagon, forward) {
-      this.create = function(name, wagon, forward) {
-        return new Player (name, wagon, forward);
       }
+    }
+    ifOnLastWagon() {
+      this.last_wagon = this.wagon === 0 ? true : false;
+    }
+    ifOnFirstWagon() {
+      this.first_wagon = this.wagon === gameMap.map.length - 1 ? true : false;
+    }
+  }
+
+  function CreatePlayer(name, wagon, forward) {
+    this.create = function (name, wagon, forward) {
+      return new Player(name, wagon, forward);
+    };
   }
 
   var playersAtStart = 4;
   var createPlayer = new CreatePlayer();
   var gameMap = new Map(playersAtStart, 1, 0, 0);
 
-  gameMap.drawMap();
-
-  for (i=0;i<playersAtStart;i++) {
-      gameMap.players_left.push(createPlayer.create(i,i+1,i<Math.round(playersAtStart/2)))
+  for (i = 0; i < playersAtStart; i++) {
+    gameMap.players_left.push(
+      createPlayer.create(i, i + 1, i < Math.round(playersAtStart / 2))
+    );
   }
-  
-  console.log(gameMap.players_left)
 
-//////////////////////////// FRONTEND ///////////////////////////////////
+  gameMap.drawMap();
+  gameMap.placePlayers();
+
+  /*function Climb(player) {
+    // if shot - skip turn
+    // if dead - skip player
+    // loop till condition
+    console.log(gameMap.players_left[gameMap.players_turn]);
+    //console.log(gameMap.players_turn) // name = turn
+    gameMap.turn =
+      gameMap.players_turn < gameMap.players_left.length
+        ? gameMap.players_turn + 1
+        : 0;
+    gameMap.placePlayers();
+  }*/
+
+  //////////////////////////// FRONTEND ///////////////////////////////////
   let table = "<table>";
   for (i = 0; i < gameMap.map.length; i++) {
     table += "<tr><td>" + JSON.stringify(gameMap.map[i]) + "</td></tr>";
@@ -94,5 +153,5 @@
   table += "</table>";
   document.getElementById("map").innerHTML = table;
   //console.log(gameMap.players_left)
-/////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////
 </script>
