@@ -1,0 +1,51 @@
+td,
+tr,
+img {
+  padding: 0px;
+  margin: 0px;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td {
+  width: 266px;
+  height: 64px;
+  color: yellow;
+}
+
+.r0_background {
+  background-image: url(/sprites/wagon_r0.png);
+}
+
+.r1_background {
+  background-image: url(/sprites/wagon_r1.png);
+}
+
+.bottom_background {
+  background-image: url(/sprites/wagon_bottom.png);
+}
+
+.h0_background {
+  background-image: url(/sprites/head_r0.png);
+}
+
+.h1_background {
+  background-image: url(/sprites/head_r1.png);
+}
+
+.h_bottom_background {
+  background-image: url(/sprites/head_bottom.png);
+}
+
+.r {
+  width: 266px;
+  height: 64px;
+  text-align: center;
+}
+
+.wild_west {
+    background: url(/sprites/bg.png)
+}
