@@ -11,11 +11,13 @@ class Map {
     this.players_turn = _players_turn;
     this.players_left = [];
     this.alive_players = [];
+    this.players_at_round_start = {};
     this.map = [];
     this.wagons_at_start = 0;
     this.winner = "";
     this.player_map_name = "";
     this.map_arr = [];
+    this.climb_sprite = "<img style='height:50px;' src='/sprites/climb.png'>";
   }
   drawMap() {
     this.map = [];
@@ -83,30 +85,45 @@ class Map {
   nextTurn() {
     //вызывается после каждого действия
     console.log(
-      "Походил игрок: " + this.players_turn,
-      " Прошел ход: " + this.round,
-      " ST: " + this.players_turn_at_round_start
+      "Player moved: " + this.players_turn,
+      " Turn passed: " + this.round
     );
 
-    if (this.round < this.alive_players.length * 3) {
-      this.round += 1;
-      this.findNextUndeadPlayer();
-    } else {
+    if (this.players_turn in this.players_at_round_start) {
+      this.players_at_round_start[this.players_turn] += 1;
+    }
+
+    var set_of_turns = new Set(Object.values(this.players_at_round_start));
+
+    if (
+      (set_of_turns.size === 1 && set_of_turns.has(3)) ||
+      this.alive_players.length === 0
+    ) {
       this.round = 1;
       this.players_turn = this.players_turn_at_round_start;
       this.nextRound();
+      document.getElementById("actions_select").style.display = "block";
+    } else {
+      this.round += 1;
+      this.findNextUndeadPlayer();
     }
 
     //updating map
     reDrawMap();
   }
   nextRound() {
+    document.getElementById("start_btn").style.visibility = "visible";
     //delete first wagon
     this.map.shift();
     //kill players in it & shift wagon positions of others
     this.players_left.forEach(player => {
       player.ifShot();
-      player["wagon"] === 0 ? (player["dead"] = true) : (player["wagon"] -= 1);
+      if (player["wagon"] === 0) {
+        player["dead"] = true;
+        delete this.players_at_round_start[player["name"]];
+      } else {
+        player["wagon"] -= 1;
+      }
     });
     //place players on map
     this.placePlayers();
@@ -138,7 +155,7 @@ class Map {
     reDrawMap();
 
     //if once wagon left - alive player with most wagons_won wins else player with max cash
-    if (this.map.length === 1) {
+    if (this.map.length === 1 && this.alive_players.length > 1) {
       var cash_arr = [];
       this.players_left.forEach(player => {
         if (player["dead"] === false) {
@@ -147,14 +164,37 @@ class Map {
       });
       this.players_left.forEach(player => {
         if (player["cash"] === Math.max.apply(Math, cash_arr)) {
-          this.winner = player["name"];
+          this.getWinnerColor(player["name"]);
           alert("Player " + this.winner + " is victorious!");
         }
       });
     } else if (this.alive_players.length === 1) {
       this.winner = this.alive_players[0];
+      this.getWinnerColor(player["name"]);
       alert("Player " + this.winner + " is victorious!");
+    } else if (this.alive_players.length === 0) {
+      this.winner = "Draw!";
+      alert(this.winner);
     }
+    this.players_at_round_start.length = 0;
+    this.players_at_round_start = {};
+    this.alive_players.forEach(el => {
+      this.players_at_round_start[el] = 0;
+    });
+  }
+
+  getWinnerColor(pl_num) {
+    if (pl_num === 0) {
+        this.winner = "Gray";
+      } else if (pl_num === 1) {
+        this.winner = "Green";
+      } else if (pl_num === 2) {
+        this.winner = "Red";
+      } else if (pl_num === 3) {
+        this.winner = "Yellow";
+      } else if (pl_num === 4) {
+        this.winner = "Blue";
+      }
   }
 
   delPlayerFromMapArray(pl, pl_m_nm) {
@@ -199,6 +239,7 @@ class Map {
       ) {
         if (en["first_wagon"] === true) {
           en["dead"] = true;
+          delete this.players_at_round_start[en["name"]];
         } else {
           this.delPlayerFromMapArray(en, this.player_map_name);
           en["wagon"] += 1;
@@ -221,6 +262,7 @@ class Map {
       ) {
         if (en["last_wagon"] === true) {
           en["dead"] = true;
+          delete this.players_at_round_start[en["name"]];
         } else {
           this.delPlayerFromMapArray(en, this.player_map_name);
           en["wagon"] -= 1;
@@ -282,11 +324,13 @@ class Map {
             this.getPlayerMapName(player);
             if (player["forward"] === true && player["first_wagon"] === true) {
               player["dead"] = true;
+              delete this.players_at_round_start[player["name"]];
             } else if (
               player["forward"] === false &&
               player["last_wagon"] === true
             ) {
               player["dead"] = true;
+              delete this.players_at_round_start[player["name"]];
             } else {
               this.delPlayerFromMapArray(player, this.player_map_name);
               player["forward"] === true
@@ -312,28 +356,27 @@ class Map {
         if (player["name"] === this.players_turn) {
           if (player["shot"] === false) {
             function getClosestPlayerFromTail(myArray, myValue, key) {
-              console.log(myArray);
-              if (myArray.length > 1) {
-                for (i = 0; i < myArray.length; i++) {
-                  if (myArray[i][key] < myValue) {
-                    return myArray[i][key];
-                  }
+              //if (myArray.length > 1) {
+              for (i = 0; i < myArray.length; i++) {
+                if (myArray[i][key] < myValue) {
+                  return myArray[i][key];
                 }
-              } else {
-                return myArray[0][key];
               }
+              /* } else {
+                return myArray[0][key];
+              } */
             }
 
             function getClosestPlayerFromHead(myArray, myValue, key) {
-              if (myArray.length > 1) {
-                for (i = 0; i < myArray.length; i++) {
-                  if (myArray[i][key] > myValue) {
-                    return myArray[i][key];
-                  }
+              // if (myArray.length > 1) {
+              for (i = 0; i < myArray.length; i++) {
+                if (myArray[i][key] > myValue) {
+                  return myArray[i][key];
                 }
-              } else {
-                return myArray[0][key];
               }
+              /*}  else {
+                return myArray[0][key];
+              } */
             }
 
             let arr = [0, 38, 136, 202, 261, 399];
@@ -384,19 +427,12 @@ class Map {
                   player["position"],
                   "position"
                 );
-                console.log(
-                  "Closest wagon: " +
-                    player["wagon"] +
-                    " Position: " +
-                    closest_player_position
-                );
                 this.shotForward(player["wagon"], closest_player_position);
 
                 // if in other wagon
               } else if (shootable_players.length > 0) {
                 var sorted_wagons_players_right = {};
                 sorted_wagons_players_right = shootable_players;
-
                 sorted_wagons_players_right.sort(
                   (a, b) => (a.wagon > b.wagon ? 1 : -1) //min to max
                 );
@@ -418,12 +454,6 @@ class Map {
                       return o.position;
                     })
                   );
-                  console.log(
-                    "Closest wagon: " +
-                      closest_player_wagon +
-                      " Position: " +
-                      closest_player_position
-                  );
                   this.shotForward(
                     closest_player_wagon,
                     closest_player_position
@@ -441,12 +471,6 @@ class Map {
                   enemy_same_wagon_left,
                   player["position"],
                   "position"
-                );
-                console.log(
-                  "Closest wagon: " +
-                    player["wagon"] +
-                    " Position: " +
-                    closest_player_position
                 );
                 this.shotBackward(player["wagon"], closest_player_position);
                 // if in other wagon
@@ -474,12 +498,6 @@ class Map {
                     wagon_players.map(function(o) {
                       return o.position;
                     })
-                  );
-                  console.log(
-                    "Closest wagon: " +
-                      closest_player_wagon +
-                      " Position: " +
-                      closest_player_position
                   );
                   this.shotBackward(
                     closest_player_wagon,
@@ -566,4 +584,9 @@ for (i = 0; i < playersAtStart; i++) {
 
 gameMap.drawMap();
 gameMap.placePlayers();
+
+gameMap.alive_players.forEach(el => {
+  gameMap.players_at_round_start[el] = 0;
+});
+
 reDrawMap();
