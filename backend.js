@@ -169,11 +169,10 @@ class Map {
         }
       });
     } else if (this.alive_players.length === 1) {
-      this.winner = this.alive_players[0];
-      this.getWinnerColor(player["name"]);
+      this.getWinnerColor(this.alive_players[0]);
       alert("Player " + this.winner + " is victorious!");
     } else if (this.alive_players.length === 0) {
-      this.winner = "Draw!";
+      this.winner = "No winner!";
       alert(this.winner);
     }
     this.players_at_round_start.length = 0;
@@ -362,9 +361,6 @@ class Map {
                   return myArray[i][key];
                 }
               }
-              /* } else {
-                return myArray[0][key];
-              } */
             }
 
             function getClosestPlayerFromHead(myArray, myValue, key) {
@@ -374,9 +370,6 @@ class Map {
                   return myArray[i][key];
                 }
               }
-              /*}  else {
-                return myArray[0][key];
-              } */
             }
 
             let arr = [0, 38, 136, 202, 261, 399];
