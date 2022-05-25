@@ -18,7 +18,7 @@ function reDrawMap() {
     } else {
       table += "<div class='r'>";
       gameMap.map[w][1].forEach(player => {
-        table += "<img src='/sprites/";
+        table += "<img src='sprites/";
         table += player;
         table += ".png'>";
       });
@@ -42,7 +42,7 @@ function reDrawMap() {
     } else {
       table += "<div class='r'>";
       gameMap.map[w][0].forEach(player => {
-        table += "<img src='/sprites/";
+        table += "<img src='sprites/";
         table += player;
         table += ".png'>";
       });
@@ -66,7 +66,7 @@ function reDrawMap() {
   document.getElementById("map").innerHTML = table;
 
   let player_pic = "";
-  player_pic += "<img src='/sprites/";
+  player_pic += "<img src='sprites/";
   player_pic += gameMap.players_turn;
   player_pic += "_f_true_s_false.png'>";
 
@@ -83,7 +83,7 @@ function nextGame() {
   gameMap.players_left.forEach(player => {
     if (player["dead"] === false) {
       turns_table += "<td>";
-      turns_table += "<img src='/sprites/";
+      turns_table += "<img src='sprites/";
       turns_table += player["name"];
       turns_table += "_f_true_s_false.png'>";
       turns_table += "$" + gameMap.players_left[player["name"]]["cash"];
@@ -233,11 +233,11 @@ function actions(moves_arr_in) {
     ] === 0
   ) {
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_player' src='/sprites/" +
+      "<img class='action_player' src='sprites/" +
       gameMap.players_turn +
       "_f_true_s_false.png'>";
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_img' src='/sprites/fire.png'>";
+      "<img class='action_img' src='sprites/fire.png'>";
     gameMap.fire();
   } else if (
     moves_arr_in[gameMap.players_turn][
@@ -245,11 +245,11 @@ function actions(moves_arr_in) {
     ] === 1
   ) {
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_player' src='/sprites/" +
+      "<img class='action_player' src='sprites/" +
       gameMap.players_turn +
       "_f_true_s_false.png'>";
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_img' src='/sprites/move.png'>";
+      "<img class='action_img' src='sprites/move.png'>";
     gameMap.move();
   } else if (
     moves_arr_in[gameMap.players_turn][
@@ -257,11 +257,11 @@ function actions(moves_arr_in) {
     ] === 2
   ) {
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_player' src='/sprites/" +
+      "<img class='action_player' src='sprites/" +
       gameMap.players_turn +
       "_f_true_s_false.png'>";
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_img' src='/sprites/turn_around.png'>";
+      "<img class='action_img' src='sprites/turn_around.png'>";
     gameMap.turnAround();
   } else if (
     moves_arr_in[gameMap.players_turn][
@@ -269,11 +269,11 @@ function actions(moves_arr_in) {
     ] === 3
   ) {
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_player' src='/sprites/" +
+      "<img class='action_player' src='sprites/" +
       gameMap.players_turn +
       "_f_true_s_false.png'>";
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_img' src='/sprites/climb.png'>";
+      "<img class='action_img' src='sprites/climb.png'>";
     gameMap.climb();
   }
 }

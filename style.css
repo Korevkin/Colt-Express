@@ -20,27 +20,27 @@ td {
 }
 
 .r0_background {
-  background-image: url(/sprites/wagon_r0.png);
+  background-image: url(sprites/wagon_r0.png);
 }
 
 .r1_background {
-  background-image: url(/sprites/wagon_r1.png);
+  background-image: url(sprites/wagon_r1.png);
 }
 
 .bottom_background {
-  background-image: url(/sprites/wagon_bottom.png);
+  background-image: url(sprites/wagon_bottom.png);
 }
 
 .h0_background {
-  background-image: url(/sprites/head_r0.png);
+  background-image: url(sprites/head_r0.png);
 }
 
 .h1_background {
-  background-image: url(/sprites/head_r1.png);
+  background-image: url(sprites/head_r1.png);
 }
 
 .h_bottom_background {
-  background-image: url(/sprites/head_bottom.png);
+  background-image: url(sprites/head_bottom.png);
 }
 
 .r {
@@ -50,7 +50,7 @@ td {
 }
 
 .wild_west {
-  background: url(/sprites/bg.png);
+  background: url(sprites/bg.png);
   border: 1px solid RGB(237, 196, 10);
 }
 
@@ -59,7 +59,7 @@ td {
   height: 100%;
   display: inline-block;
   text-align: center;
-  background: url(/sprites/bg_menu.png);
+  background: url(sprites/bg_menu.png);
   background-size: 80px 80px;
 }
 
@@ -77,7 +77,7 @@ td {
   height: 100%;
   display: inline-block;
   text-align: center;
-  background: url(/sprites/bg_menu.png);
+  background: url(sprites/bg_menu.png);
   background-size: 80px 80px;
 }
 
@@ -88,7 +88,7 @@ td {
 
 .parent {
   text-align: left;
-  background: url(/sprites/bg_menu.png);
+  background: url(sprites/bg_menu.png);
   background-size: 80px 80px;
 }
 
@@ -357,7 +357,7 @@ select {
   display: inline-block;
   top: 1px;
   right: 1px;
-  background: url(/sprites/arrow_left.gif) left / 90% no-repeat #fff;
+  background: url(sprites/arrow_left.gif) left / 90% no-repeat #fff;
   pointer-events: none;
 }
 
@@ -382,7 +382,7 @@ select {
   width: 100%;
   font-size: 90%;
   text-align: justify;
-  background: url(/sprites/bg_menu.png);
+  background: url(sprites/bg_menu.png);
   background-size: 80px 80px;
 }
 

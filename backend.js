@@ -17,7 +17,7 @@ class Map {
     this.winner = "";
     this.player_map_name = "";
     this.map_arr = [];
-    this.climb_sprite = "<img style='height:50px;' src='/sprites/climb.png'>";
+    
   }
   drawMap() {
     this.map = [];

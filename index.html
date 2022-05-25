@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <meta charset="UTF-8" />
+<html>
+<body id="body">
 <link rel="shortcut icon" href="/favicon_icon/favicon.ico" />
 <link rel="stylesheet" href="style.css" />
-<body id="body">
+
   <div class="flex-parent-element">
     <div class="flex-child-element">
-      <img class="logo" src="/sprites/logo.png" />
+      <img class="logo" src="sprites/logo.png" />
     </div>
     <div class="flex-child-element">
       <button class="btn b-3" onclick="rules()">RULES</button>
@@ -18,7 +20,7 @@
 
   <div class="parent">
     <span style="margin-left: 10px">NEXT TURN</span>
-    <div class="child"><img class="arrow" src="/sprites/arrow.gif" /></div>
+    <div class="child"><img class="arrow" src="sprites/arrow.gif" /></div>
     <div class="child" id="players_turn"></div>
     <div class="child">
       <button id="start_btn" class="btn b-3" onclick="game()">START</button>
@@ -57,7 +59,7 @@
         </td>
         <td>
           <h4>Actions</h4>
-          <h5>Fire<img class="action_img_rules" src="/sprites/fire_logo.png" /></h5>
+          <h5>Fire<img class="action_img_rules" src="sprites/fire_logo.png" /></h5>
           Shoot the nearest player you are facing. The bullet flies through the
           wagons till it hits someone. Player can’t shoot someone standing on
           the roof, while standing inside the wagon and vice-versa. Shot player
@@ -65,13 +67,13 @@
           players can’t be shot, the bullet flies over them. Shot players
           shifted out of the train leave the game. If the player is shot,
           instead of performing an action during its turn, the player stands up.
-          <h5>Turn around<img class="action_img_rules" src="/sprites/turn_around_logo.png"/></h5>
+          <h5>Turn around<img class="action_img_rules" src="sprites/turn_around_logo.png"/></h5>
           Turn your player opposite direction its facing now.
           <h5>
-            Climb<img class="action_img_rules" src="/sprites/climb_logo.png" />
+            Climb<img class="action_img_rules" src="sprites/climb_logo.png" />
           </h5>
           Move your player to the top or to the bottom of the wagon.
-          <h5>Move<img class="action_img_rules" src="/sprites/move_logo.png" /></h5>
+          <h5>Move<img class="action_img_rules" src="sprites/move_logo.png" /></h5>
           Move your player inside the next wagon, if the player stands inside
           the wagon, or on top of the next wagon, if the player stands on top of
           the wagon, in the direction it’s facing. Players moved out of the
@@ -87,7 +89,9 @@
       Web version by Ivan Korevkin, 2022
     </p>
   </footer>
+<script type="text/javascript" src="visuals.js"></script>
+<script type="text/javascript" src="backend.js"></script>
 </body>
+</html>
 
-<script src="visuals.js"></script>
-<script src="backend.js"></script>
+
