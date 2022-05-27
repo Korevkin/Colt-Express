@@ -223,7 +223,7 @@ function actions(moves_arr_in) {
       gameMap.players_turn +
       "_f_true_s_false.gif'>";
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_img' src='sprites/fire.gif'>";
+      "<img class='action_img' src='sprites/fire.png'>";
     gameMap.fire();
   } else if (
     moves_arr_in[gameMap.players_turn][
@@ -235,7 +235,7 @@ function actions(moves_arr_in) {
       gameMap.players_turn +
       "_f_true_s_false.gif'>";
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_img' src='sprites/move.gif'>";
+      "<img class='action_img' src='sprites/move.png'>";
     gameMap.move();
   } else if (
     moves_arr_in[gameMap.players_turn][
@@ -247,7 +247,7 @@ function actions(moves_arr_in) {
       gameMap.players_turn +
       "_f_true_s_false.gif'>";
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_img' src='sprites/turn_around.gif'>";
+      "<img class='action_img' src='sprites/turn_around.png'>";
     gameMap.turnAround();
   } else if (
     moves_arr_in[gameMap.players_turn][
@@ -259,7 +259,7 @@ function actions(moves_arr_in) {
       gameMap.players_turn +
       "_f_true_s_false.gif'>";
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_img' src='sprites/climb.gif'>";
+      "<img class='action_img' src='sprites/climb.png'>";
     gameMap.climb();
   }
 }
