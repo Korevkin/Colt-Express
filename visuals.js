@@ -1,74 +1,59 @@
 var playersAtStart = prompt("Enter the number of players", 4);
 //var playersAtStart = 4;
-const timer = ms => new Promise(res => setTimeout(res, ms));
+const timer = (ms) => new Promise((res) => setTimeout(res, ms));
 
 function reDrawMap() {
-  let table = '<table cellpadding="0" cellspacing="0">';
-  table += "<tr>";
-  // top
+  let gc_w = "";
+  let map_grid = '<div id="gc" class="grid-container">';
   for (w = 0; w < gameMap.map.length; w++) {
+    gc_w += "266px ";
+    map_grid += "<div class='grid-item'>";
     if (w != gameMap.map.length - 1) {
-      table += "<td class='r1_background'>";
+      map_grid += "<div class='grid-wagon'>";
     } else {
-      table += "<td class='h1_background'>";
+      map_grid += "<div class='grid-head'>";
     }
-
+    //top
     if (gameMap.map[w][1].length < 1) {
-      table += "<div class='r'></div>";
+      map_grid += "<div class='grid-row'></div>";
     } else {
-      table += "<div class='r'>";
-      gameMap.map[w][1].forEach(player => {
-        table += "<img src='sprites/";
-        table += player;
-        table += ".png'>";
+      map_grid += "<div class='grid-row'>";
+      gameMap.map[w][1].forEach((player) => {
+        map_grid += "<img src='sprites/";
+        map_grid += player;
+        map_grid += ".gif'>";
       });
-      table += "</div>";
+      map_grid += "</div>";
     }
-
-    table += "</td>";
-  }
-  table += "</tr>";
-  table += "<tr>";
-  // middle
-  for (w = 0; w < gameMap.map.length; w++) {
-    if (w != gameMap.map.length - 1) {
-      table += "<td class='r0_background'>";
-    } else {
-      table += "<td class='h0_background'>";
-    }
-
+    //middle
     if (gameMap.map[w][0].length < 1) {
-      table += "<div class='r'></div>";
+      map_grid += "<div class='grid-row'></div>";
     } else {
-      table += "<div class='r'>";
-      gameMap.map[w][0].forEach(player => {
-        table += "<img src='sprites/";
-        table += player;
-        table += ".png'>";
+      map_grid += "<div class='grid-row'>";
+      gameMap.map[w][0].forEach((player) => {
+        map_grid += "<img src='sprites/";
+        map_grid += player;
+        map_grid += ".gif'>";
       });
-      table += "</div>";
+      map_grid += "</div>";
+    }
+    //bottom
+    if (gameMap.map[w][0].length < 1) {
+      map_grid += "<div class='grid-row'></div>";
     }
 
-    table += "</td>";
+    map_grid += "</div>";
+    map_grid += "</div>";
   }
-  table += "</tr>";
-  table += "<tr>";
-  // bottom
-  for (w = 0; w < gameMap.map.length; w++) {
-    if (w != gameMap.map.length - 1) {
-      table += "<td class='bottom_background'></td>";
-    } else {
-      table += "<td class='h_bottom_background'>";
-    }
-  }
-  table += "</tr>";
-  table += "</table>";
-  document.getElementById("map").innerHTML = table;
+  map_grid += "</div>";
+  console.log(gc_w);
+  document.getElementById("map").innerHTML = map_grid;
+  document.getElementById("gc").style.gridTemplateColumns = gc_w;
 
   let player_pic = "";
   player_pic += "<img src='sprites/";
   player_pic += gameMap.players_turn;
-  player_pic += "_f_true_s_false.png'>";
+  player_pic += "_f_true_s_false.gif'>";
 
   document.getElementById("players_turn").innerHTML = player_pic;
 
@@ -80,12 +65,12 @@ function reDrawMap() {
 function nextGame() {
   let turns_table = "<table class='menu_table'>";
   turns_table += "<tr>";
-  gameMap.players_left.forEach(player => {
+  gameMap.players_left.forEach((player) => {
     if (player["dead"] === false) {
       turns_table += "<td>";
       turns_table += "<img src='sprites/";
       turns_table += player["name"];
-      turns_table += "_f_true_s_false.png'>";
+      turns_table += "_f_true_s_false.gif'>";
       turns_table += "$" + gameMap.players_left[player["name"]]["cash"];
       turns_table += "</td>";
     }
@@ -93,7 +78,7 @@ function nextGame() {
   turns_table += "</tr>";
   for (let i = 0; i < 3; i++) {
     turns_table += "<tr>";
-    gameMap.players_left.forEach(player => {
+    gameMap.players_left.forEach((player) => {
       if (player["dead"] === false) {
         turns_table += "<td id='" + player["name"] + "__" + i + "'>";
         i > 0
@@ -117,7 +102,8 @@ function nextGame() {
               "_" +
               i +
               '"></div>');
-        turns_table +='<option value="" disabled selected>Select action</option>';
+        turns_table +=
+          '<option value="" disabled selected>Select action</option>';
         turns_table += '<option value="0">Fire</option>';
         turns_table += '<option value="1">Move</option>';
         turns_table += '<option value="2">Turn around</option>';
@@ -129,7 +115,7 @@ function nextGame() {
     turns_table += "</tr>";
   }
   turns_table += "<tr>";
-  gameMap.players_left.forEach(player => {
+  gameMap.players_left.forEach((player) => {
     if (player["dead"] === false) {
       turns_table += '<td><button class="btn b-3" id="';
       turns_table += player["name"];
@@ -143,14 +129,14 @@ function nextGame() {
 
   // enable selects one by one
   for (let i = 0; i < 3; i++) {
-    gameMap.players_left.forEach(player => {
+    gameMap.players_left.forEach((player) => {
       if (player["dead"] === false) {
         if (i > 0) {
           document
             .getElementById(player["name"] + "_" + (i - 1))
             .addEventListener(
               "change",
-              function(event) {
+              function (event) {
                 if (event.target.value != "") {
                   document.getElementById(
                     player["name"] + "_" + i
@@ -191,7 +177,7 @@ async function game() {
   moves_arr.length = 0;
   var count = 0;
 
-  gameMap.players_left.forEach(player => {
+  gameMap.players_left.forEach((player) => {
     if (player["dead"] === false) {
       moves_arr[player["name"]] = [];
       for (i = 0; i < 3; i++) {
@@ -235,9 +221,9 @@ function actions(moves_arr_in) {
     document.getElementById("action_show").innerHTML +=
       "<img class='action_player' src='sprites/" +
       gameMap.players_turn +
-      "_f_true_s_false.png'>";
+      "_f_true_s_false.gif'>";
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_img' src='sprites/fire.png'>";
+      "<img class='action_img' src='sprites/fire.gif'>";
     gameMap.fire();
   } else if (
     moves_arr_in[gameMap.players_turn][
@@ -247,9 +233,9 @@ function actions(moves_arr_in) {
     document.getElementById("action_show").innerHTML +=
       "<img class='action_player' src='sprites/" +
       gameMap.players_turn +
-      "_f_true_s_false.png'>";
+      "_f_true_s_false.gif'>";
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_img' src='sprites/move.png'>";
+      "<img class='action_img' src='sprites/move.gif'>";
     gameMap.move();
   } else if (
     moves_arr_in[gameMap.players_turn][
@@ -259,9 +245,9 @@ function actions(moves_arr_in) {
     document.getElementById("action_show").innerHTML +=
       "<img class='action_player' src='sprites/" +
       gameMap.players_turn +
-      "_f_true_s_false.png'>";
+      "_f_true_s_false.gif'>";
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_img' src='sprites/turn_around.png'>";
+      "<img class='action_img' src='sprites/turn_around.gif'>";
     gameMap.turnAround();
   } else if (
     moves_arr_in[gameMap.players_turn][
@@ -271,9 +257,9 @@ function actions(moves_arr_in) {
     document.getElementById("action_show").innerHTML +=
       "<img class='action_player' src='sprites/" +
       gameMap.players_turn +
-      "_f_true_s_false.png'>";
+      "_f_true_s_false.gif'>";
     document.getElementById("action_show").innerHTML +=
-      "<img class='action_img' src='sprites/climb.png'>";
+      "<img class='action_img' src='sprites/climb.gif'>";
     gameMap.climb();
   }
 }
@@ -284,18 +270,6 @@ function rules() {
     : (document.getElementById("rules").style.display = "none");
 }
 
-function crt() {
-  document.getElementById("body").classList.toggle("crt");
-  for (let i = 0; i < 3; i++) {
-    gameMap.players_left.forEach(player => {
-      if (player["dead"] === false) {
-        let sel_id = player["name"] + "_" + i;
-        document.getElementById(sel_id).classList.toggle("crt");
-      }
-    });
-  }
-}
-
 function ng() {
-    document.location.reload();
+  document.location.reload();
 }
